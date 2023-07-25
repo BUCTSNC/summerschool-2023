@@ -1,8 +1,8 @@
-import bodyParser from "body-parser";
 import { Router } from "express";
 import { readFile, writeFile } from "node:fs/promises";
 import z from "zod";
 import { addExitHook } from "../../utils/exitHooks.js";
+import jsonParser from "../../middlewares/jsonParser.js";
 
 const posterSchema = z.object({
   email: z.string("Email must be a string").email("Email invalid"),
@@ -13,7 +13,7 @@ const posterSchema = z.object({
 });
 
 const posterRouter = Router();
-const jsonParser = bodyParser.json();
+
 
 let posters = await readFile("./posters.json")
   .then(JSON.parse)
