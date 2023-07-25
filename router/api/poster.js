@@ -3,9 +3,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import z from "zod";
 import { addExitHook } from "../../utils/exitHooks.js";
 import jsonParser from "../../middlewares/jsonParser.js";
+import { requireLogin } from "../../middlewares/session.js";
 
 const posterSchema = z.object({
-  email: z.string("Email must be a string").email("Email invalid"),
   content: z
     .string("Poster content must be a string")
     .min(5, "Poster too short, must longer than 5 characters")
@@ -14,7 +14,6 @@ const posterSchema = z.object({
 
 const posterRouter = Router();
 
-
 let posters = await readFile("./posters.json")
   .then(JSON.parse)
   .catch((e) => {
@@ -22,10 +21,15 @@ let posters = await readFile("./posters.json")
     return [];
   });
 
+posterRouter.use(requireLogin);
+
 posterRouter.post("/", jsonParser, (req, res) => {
   const validateResult = posterSchema.safeParse(req.body);
   if (validateResult.success) {
-    posters = [...posters, validateResult.data];
+    posters = [
+      ...posters,
+      { username: req.session.username, ...validateResult.data },
+    ];
     res.send("received");
   } else {
     res.status(400).send(validateResult.error.message);
@@ -33,7 +37,7 @@ posterRouter.post("/", jsonParser, (req, res) => {
 });
 
 posterRouter.get("/", (req, res) => {
-  res.json(posters);
+  res.send(posters);
 });
 
 export default posterRouter;

@@ -47,6 +47,7 @@ userRouter.post("/login", jsonParser, (req, res) => {
         (user) => user.username === username && user.password === password
       ) !== -1
     ) {
+      req.session.username = username;
       res.send("Successful login");
     } else {
       res
@@ -57,6 +58,11 @@ userRouter.post("/login", jsonParser, (req, res) => {
     res.status(400).send(validateResult.error.message);
   }
 });
+
+userRouter.post("/logout", (req, res) => {
+  req.session.destroy()
+  res.send("Logout")
+})
 
 export default userRouter;
 
