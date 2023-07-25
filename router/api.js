@@ -1,5 +1,5 @@
 import { Router } from "express";
-import posterRouter from "./api/poster";
+import posterRouter from "./api/poster.js";
 
 const apiRouter = Router();
 
