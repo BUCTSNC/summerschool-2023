@@ -1,0 +1,6 @@
+{
+    "signal": "SIGINT",
+    "ignore": [
+        "posters.json", "users.json"
+    ]
+}

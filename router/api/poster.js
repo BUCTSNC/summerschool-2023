@@ -1,6 +1,8 @@
-import { Router } from "express";
 import bodyParser from "body-parser";
+import { Router } from "express";
+import { readFile, writeFile } from "node:fs/promises";
 import z from "zod";
+import { addExitHook } from "../../utils/exitHooks.js";
 
 const posterSchema = z.object({
   email: z.string("Email must be a string").email("Email invalid"),
@@ -13,7 +15,12 @@ const posterSchema = z.object({
 const posterRouter = Router();
 const jsonParser = bodyParser.json();
 
-let posters = [];
+let posters = await readFile("./posters.json")
+  .then(JSON.parse)
+  .catch((e) => {
+    console.log(JSON.stringify(e));
+    return [];
+  });
 
 posterRouter.post("/", jsonParser, (req, res) => {
   const validateResult = posterSchema.safeParse(req.body);
@@ -26,7 +33,13 @@ posterRouter.post("/", jsonParser, (req, res) => {
 });
 
 posterRouter.get("/", (req, res) => {
-    res.json(posters)
-})
+  res.json(posters);
+});
 
 export default posterRouter;
+
+addExitHook(async () => {
+  console.log("Saving posters to file");
+  await writeFile("./posters.json", JSON.stringify(posters));
+  console.log("Saved");
+});
