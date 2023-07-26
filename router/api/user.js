@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { addExitHook } from "../../utils/exitHooks.js";
 import { Router } from "express";
 import jsonParser from "../../middlewares/jsonParser.js";
+import bcrypt from "bcrypt";
 import z from "zod";
 
 const userRouter = Router();
@@ -23,12 +24,13 @@ const userBasicSchema = z.object({
     .max(32, "password should shorter than 32 characters"),
 });
 
-userRouter.post("/registry", jsonParser, (req, res) => {
+userRouter.post("/registry", jsonParser, async (req, res) => {
   const validateResult = userBasicSchema.safeParse(req.body);
   if (validateResult.success) {
-    const { username } = validateResult.data;
+    const { username, password } = validateResult.data;
     if (users.findIndex((user) => user.username === username) === -1) {
-      users = [...users, validateResult.data];
+      const hashedPassword = await bcrypt.hash(password, 8);
+      users = [...users, { username, password: hashedPassword }];
       res.send("Success");
     } else {
       res.status(400).send("username already used.");
@@ -38,15 +40,14 @@ userRouter.post("/registry", jsonParser, (req, res) => {
   }
 });
 
-userRouter.post("/login", jsonParser, (req, res) => {
+userRouter.post("/login", jsonParser, async (req, res) => {
   const validateResult = userBasicSchema.safeParse(req.body);
   if (validateResult.success) {
     const { username, password } = validateResult.data;
-    if (
-      users.findIndex(
-        (user) => user.username === username && user.password === password
-      ) !== -1
-    ) {
+    const user = users.find((user) => user.username === username);
+    if (user === undefined) {
+      res.status(404).send("No such user");
+    } else if (await bcrypt.compare(password, user.password)) {
       req.session.username = username;
       res.send("Successful login");
     } else {
@@ -60,9 +61,9 @@ userRouter.post("/login", jsonParser, (req, res) => {
 });
 
 userRouter.post("/logout", (req, res) => {
-  req.session.destroy()
-  res.send("Logout")
-})
+  req.session.destroy();
+  res.send("Logout");
+});
 
 export default userRouter;
 
