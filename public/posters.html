@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Posters</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <ul id="posterList"></ul>
+        <script type="module">
+            const posterList = document.getElementById("posterList")
+            fetch("/api/poster", {
+                method: "GET", credentials: "same-origin"
+            }).then(async res => {
+                if(res.status!==200) {
+                    throw await res.text()
+                } else {
+                    return res.json()
+                }
+            }).then(data => {
+                data.forEach(poster => {
+                    const {username, content} = poster
+                    const li = document.createElement("li")
+                    const usernameP = document.createElement("p")
+                    const contentP = document.createElement("p")
+                    usernameP.innerText = username
+                    contentP.innerText = content
+                    li.appendChild(usernameP)
+                    li.appendChild(contentP)
+                    posterList.appendChild(li)
+                })
+            })
+            .catch(err => {
+                alert(err.message)
+            })
+        </script>
+    </body>
+</html>

@@ -1,3 +1,5 @@
 node_modules/
 *.dec
 *.enc
+posters.json
+users.json
