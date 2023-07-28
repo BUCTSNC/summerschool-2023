@@ -28,7 +28,7 @@ posterRouter.post("/", jsonParser, (req, res) => {
   if (validateResult.success) {
     posters = [
       ...posters,
-      { username: req.session.username, ...validateResult.data },
+      { username: req.session.username, ...validateResult.data, createdAt: new Date().getTime() },
     ];
     res.send("received");
   } else {

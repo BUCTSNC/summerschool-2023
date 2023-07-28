@@ -18,14 +18,17 @@
                 }
             }).then(data => {
                 data.forEach(poster => {
-                    const {username, content} = poster
+                    const {username, content, createdAt} = poster
                     const li = document.createElement("li")
                     const usernameP = document.createElement("p")
                     const contentP = document.createElement("p")
+                    const dateP = document.createElement("p")
                     usernameP.innerText = username
                     contentP.innerText = content
+                    dateP.innerText = new Date(createdAt).toLocaleDateString()
                     li.appendChild(usernameP)
                     li.appendChild(contentP)
+                    li.appendChild(dateP)
                     posterList.appendChild(li)
                 })
             })

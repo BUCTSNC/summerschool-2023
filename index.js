@@ -7,8 +7,6 @@ import apiRouter from "./router/api.js";
 const app = express();
 const compressor = compression();
 
-console.log(join(dirname(import.meta.url), "public"))
-
 app.use(compressor);
 app.use(timer);
 const url = new URL(import.meta.url);
