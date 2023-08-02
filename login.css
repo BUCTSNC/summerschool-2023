@@ -1,0 +1,28 @@
+html * {
+    padding: 0;
+    margin: 0;
+}
+
+#background * {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#background {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login_box {
+    border-radius: 16px;
+    box-shadow: 0 0 16px 16px #a9a9a9;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: stretch;
+    gap: 8px;
+}

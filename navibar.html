@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale:1.0" />
+    <title>Home Page</title>
+    <style>
+      :root {
+        --light-blue: rgba(0, 122, 233, 1);
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      #navibar {
+        background-color:var(--light-blue);
+        color: white;
+        position: sticky;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 8px;
+      }
+
+      #logo {
+        font-size: 32px;
+      }
+
+      #operation {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      #links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      #links a {
+        color: white;
+        text-decoration: none;
+      }
+
+      #links a:hover {
+        color: rgb(233, 190, 0);
+        text-decoration: underline 2px solid;
+      }
+
+      #search {
+        background-color: rgba(1, 1, 1, 0.5);
+        padding: 4px;
+        border-radius: 4px;
+      }
+
+      #search_input {
+        background-color: transparent;
+        border: none;
+        color: white;
+      }
+
+      #search_input:focus {
+        outline: none;
+      }
+
+      #search_btn {
+        background-color: rgb(8, 102, 8);
+        border: none;
+        border-radius: 4px;
+        padding: 4px;
+        color: white;
+      }
+
+      #search_btn:hover {
+        background-color: rgb(10, 144, 10);
+      }
+
+      @media screen and (max-width: 640px) {
+        #navibar {
+          justify-content: center;
+          padding: 0;
+        }
+
+        #logo {
+          width: 100%;
+          text-align: center;
+          background-color: white;
+          color: var(--light-blue);
+        }
+
+        #operation {
+          justify-content: center;
+          margin: 8px;
+        }
+
+        #links {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="navibar">
+      <div id="logo">SNC</div>
+      <div id="operation">
+        <div id="links">
+          <a href="/">主页</a>
+          <a href="/projects">项目</a>
+          <a href="/departments">部门</a>
+          <a href="/members">优秀成员</a>
+          <a href="https://github.com/buctsnc">GitHub</a>
+        </div>
+        <div id="search">
+          <input type="text" id="search_input" placeholder="输入关键词搜索" />
+          <button type="button" id="search_btn">搜索</button>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
