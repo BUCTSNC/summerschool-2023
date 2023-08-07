@@ -1,6 +1,6 @@
-const { scrypt, createCipheriv } = await import("node:crypto");
-const { readFile, writeFile } = await import("node:fs");
-const { argv, exit } = await import("node:process");
+import { scrypt, createCipheriv } from "node:crypto";
+import { readFile, writeFile } from "node:fs";
+import { argv, exit } from "node:process";
 
 const [input, output, password, salt] = argv.slice(2, 6);
 
@@ -20,9 +20,7 @@ scrypt(password, salt, 24, (err, key) => {
       exit(2);
     }
 
-    const crypted = Buffer.concat([
-      cipher.update(data), cipher.final()
-    ])
+    const crypted = Buffer.concat([cipher.update(data), cipher.final()]);
 
     writeFile(output, crypted, (err) => {
       if (err !== null) {
