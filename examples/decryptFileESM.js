@@ -19,8 +19,9 @@ scrypt(password, salt, 24, (err, key) => {
       exit(2);
     }
 
-    let decrypted = decipher.update(data);
-    decrypted += decipher.final();
+    const decrypted = Buffer.concat([
+      decipher.update(data), decipher.final()
+    ])
 
     writeFile(output, decrypted, "utf-8", (err) => {
       if (err !== null) {
