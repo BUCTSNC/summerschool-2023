@@ -65,31 +65,36 @@ router.post("/:postId", bodyParser.json(), sess, async (req, res) => {
     }
 });
 
-// router.delete("/:commentId", sess, async (req, res) => {
-//     const userId = req.session.userId;
-//     if (userId === undefined) {
-//         res.status(403).send("需要登录")
-//         return undefined
-//     }
+router.delete("/:commentId", sess, async (req, res) => {
+    const userId = req.session.userId;
+    if (userId === undefined) {
+        res.status(403).send("需要登录")
+        return undefined
+    }
 
-//     const id = Number(req.params.commentId)
+    const id = Number(req.params.commentId)
 
-//     const count = await prisma.post.count({
-//         where: { id, postedBy: { id: userId } }
-//     })
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { isAdmin: true }
+    })
 
-//     if (count === 1) {
-//         await prisma.post.update({
-//             where: { id },
-//             data: {
-//                 deletedAt: new Date()
-//             }
-//         });
-//         res.send("删除成功")
-//         return undefined
-//     }
+    const count = await prisma.comment.count({
+        where: { id, postedBy: { id: userId } }
+    })
 
-//     res.status(403).send("没有权限")
-// })
+    if (count === 1 || user?.isAdmin) {
+        await prisma.comment.update({
+            where: { id },
+            data: {
+                deletedAt: new Date()
+            }
+        });
+        res.send("删除成功")
+        return undefined
+    }
+
+    res.status(403).send("没有权限")
+})
 
 export default router;
