@@ -33,6 +33,7 @@ let userLoginTimeList: any[] = [];
 
 const router = Router();
 
+//注册
 const registrySchema = z.object({
   email: z.string().email(),
   telephone: z.string().optional(),
@@ -136,6 +137,9 @@ router.post("/login", bodyParser.json(), sess, async (req, res) => {
   res.status(403).send("用户名或密码不正确")
 
 })
+//})
+
+
 
 //Get/api/user/profile
 router.get("/profile", sess, async (req, res) => {
@@ -175,4 +179,77 @@ router.get("/logout", sess, (req, res) => {
   })
 })
 
-export default router;
+
+// 张云菲
+// 修改登录密码的存储方式  
+// 重新设置密码 
+/*
+思路：
+ 修改登录密码的存储方式：
+
+
+重新设置密码：
+请求方法：PUT
+访问路径：`/api/user/password`
+通过该路径可以更新用户的密码，要求：
+- 该动作只能由已经登录的用户自己对自己的账号进行；
+- 如果设置了query参数userId，则需要登录用户为管理员，可以设置目标用户的密码
+先登录，检查是不是已登录状态，
+若是已登录状态，可修改密码，否则返回需要登录的错误信息
+修改密码若改好了返回修改成功，否则返回修改失败
+检查是否为管理员账户
+若是，输入修改时需加上要修改密码的账户的id
+*/
+
+const change_password = z.object(
+    {
+        password: z.string().min(3).max(30),   
+    }
+)
+
+router.put("/password",bodyParser.json(),sess,async (req,res)=>{
+    const userId = req.session.userId;  //当前登录的用户的id号
+    const data = req.body   //相当于输入的json里的东西
+
+    if (userId === undefined) {
+        res.status(403).send("需要登录")
+        return undefined
+    }
+    const result = change_password.safeParse(data)    //保证密码安全性？还得再问问
+    if (result.success) {
+        const { password } = result.data;     //???啥来着
+        try {
+            const created = await prisma.user.update({   //更新内容
+                where: {
+                    id:userId
+                },
+                data: {
+                    password:password
+                }
+            })
+            // posts = [...posts, data]
+            //res.send("Successful")
+            res.send(String(created.id))
+        } catch (err) {
+            console.log()
+            res.status(403).send("无效用户id")
+        }
+    }
+    const id = Number(req.query["id"]);
+    const count = await prisma.post.count({  //post在这里是对的嘛？
+        where: { id, postedBy: { id: userId } }
+    })
+
+    if (count === 1) {
+        await prisma.post.update({
+        where: { id },
+        data: {
+            deletedAt: new Date()
+        }
+    })
+    res.send("删除成功")
+    }
+
+})
+
+export default router

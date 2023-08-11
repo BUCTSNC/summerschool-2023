@@ -1,17 +1,15 @@
 import bodyParser from "body-parser";
-import z from "zod";
 import { Router } from "express";
-import prisma from "../../prisma.js";
+import z from "zod";
 import sess from "../../middleware/session.js";
+import prisma from "../../prisma.js";
 
 const router = Router();
 
-let posts = [];
 const postSchema = z.object(
     {
         title: z.string().min(5).max(255),
         content: z.string().min(5).max(1024),
-        email: z.string().email()
     }
 )
 
@@ -24,35 +22,10 @@ router.get("/", async (req, res) => {
         }
     );
     res.json(posts)
-})
-router.delete("/:id", sess, async (req, res) => {
-    const userId = req.session.userId;
-    if (userId === undefined) {
-        res.status(403).send("需要登录");
-        return undefined;
-    }
-    const id = Number(req.params.id);
-    const count = await prisma.post.count({
-        where: {
-            id, postedBy: { id: userId }
-        }
-    })
-    if (count === 1) {
-        await prisma.post.update(
-            {
-                where: { id },
-                data: {
-                    deletedAt: new Date()
-                }
-            }
-        );
-        res.send("删除成功")
-        return undefined
-    }
-    res.status(403).send("没有权限")
 
 })
-//删除post
+
+//发评论
 router.post("/", bodyParser.json(), sess, async (req, res) => {
     const userId = req.session.userId;
     if (userId === undefined) {
@@ -62,17 +35,14 @@ router.post("/", bodyParser.json(), sess, async (req, res) => {
     const data = req.body;
     const result = postSchema.safeParse(data)
     if (result.success) {
-        // posts = [...posts, data]
-        // res.send("Successful")
-        // const created = await prisma.post.create({
-        //     data
-        // })
-        // res.send(String(created.id))
         const { title, content } = result.data;
         try {
             const created = await prisma.post.create({
                 data: {
-                    title, content, ipAddress: req.ip, postedBy: {
+                    title,
+                    content,
+                    ipAddress: req.ip,
+                    postedBy: {
                         connect: { id: userId }
                     }
                 }
@@ -87,5 +57,27 @@ router.post("/", bodyParser.json(), sess, async (req, res) => {
         res.status(400).send("Failed")
     }
 });
+
+router.delete("/:id", sess, async (req, res) => {
+    const userId = req.session.userId;
+    if (userId === undefined) {
+        res.status(403).send("需要登录")
+        return undefined
+    }
+    const id = Number(req.params.id)
+
+    const count = await prisma.post.count({
+        where: { id, postedBy: { id: userId } }
+    })
+    if (count === 1) {
+        await prisma.post.update({
+            where: { id },
+            data: {
+                deletedAt: new Date()
+            }
+        })
+        res.send("删除成功")
+    }
+})
 
 export default router;
