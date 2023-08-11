@@ -5,7 +5,8 @@ const sess = session({
         maxAge: 5 * 60 * 60 * 1000,
         secure: false
     },
-    secret: "fjqoi3/4nj;w89234u",
+    //secret: "fjqoi3/4nj;w89234u",
+    secret: "123456",
     resave: false,
     saveUninitialized: false
 });
