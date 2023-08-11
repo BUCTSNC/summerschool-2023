@@ -10,12 +10,30 @@ const commentSchema = z.object({
     content: z.string().min(1).max(255),
 })
 
-// router.get("/:postId", async (req, res) => {
-//     const postId = req.query.postId;
-//     const postIndex = req.query.postIndex||0;
-//     const postSize = req.query.postSize||20;
-//     const sort = req.query.sort ="acs"?"desc":"desc"; 
-// })
+router.get("/:postId", async (req, res) => {
+    const postId = Number(req.params.postId);
+    const pageIndex = Number(req.query.pageIndex) || 0;
+    const pageSize = Number(req.query.pageSize) || 20;
+    const sort = req.query.sort === "asc" ? "asc" : "desc";
+    const comments = await prisma.comment.findMany({
+        where: {
+            replyTo: { id: postId }, deletedAt: null
+        },
+        skip: pageIndex * pageSize,
+        take: pageSize,
+        orderBy: {
+            createdAt: sort
+        },
+        select: {
+            content: true, postedBy: {
+                select: {
+                    nickname: true, email: true
+                }
+            }, createdAt: true
+        }
+    })
+    res.json(comments)
+})
 
 router.post("/:postId", bodyParser.json(), sess, async (req, res) => {
     const userId = req.session.userId;
@@ -25,16 +43,16 @@ router.post("/:postId", bodyParser.json(), sess, async (req, res) => {
         return undefined
     }
     const data = req.body;
-   
+
     const result = commentSchema.safeParse(data)
     if (result.success) {
         const { content } = result.data;
         try {
             const created = await prisma.comment.create({
                 data: {
-                    content, 
-                    postedBy: {connect: { id: userId }},
-                    replyTo:{connect: { id: postId }}
+                    content,
+                    postedBy: { connect: { id: userId } },
+                    replyTo: { connect: { id: postId } }
                 }
             })
             res.send(String(created.id))
