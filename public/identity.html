@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile</title>
+  <style>
+
+      .background{
+            background-image: url(./2.jpg);
+            background-size:cover; 
+            background-repeat: no-repeat;
+            background-size:100% 100%;
+            min-height: 100vh;
+            position: relative; /* 设置相对定位，使子元素相对于该父元素定位 */
+      }
+      .title {
+        position: absolute; /* 设置绝对定位，相对于父元素进行定位 */
+        top: 40%; /* 相对于父元素顶部的偏移量为 50% */
+        left: 50%; /* 相对于父元素左侧的偏移量为 50% */
+        transform: translate(-50%, -50%); /* 使用位移变换将自身居中 */
+            
+        text-align: center;
+         
+
+      }
+
+    .userProfile {
+
+      position: absolute; /* 设置绝对定位，相对于父元素进行定位 */
+        top: 50%; /* 相对于父元素顶部的偏移量为 50% */
+        left: 50%; /* 相对于父元素左侧的偏移量为 50% */
+        transform: translate(-50%, -50%); /* 使用位移变换将自身居中 */
+
+        text-align: center;
+      /*background-color: lightgray;*/
+      padding: 20px;
+      
+    }
+
+    .upgrate {
+      position: absolute; /* 设置绝对定位，相对于父元素进行定位 */
+      top: 60%; /* 相对于父元素顶部的偏移量为 50% */
+      left: 50%; /* 相对于父元素左侧的偏移量为 50% */
+      transform: translate(-50%, -50%); /* 使用位移变换将自身居中 */
+
+        text-align: center;
+        
+    }
+
+  </style>
+</head>
+<body>
+  <div class="background">
+    <div class="title">
+      <h1>个人信息</h1>
+    </div>
+      <div id="userProfile" class="userProfile"></div>
+    <div class="upgrate">
+    <button id="upgrate" onclick="change()">修改个人信息</button><!--调用修改信息的函数-->
+    </div>
+  </div>
+
+    <script>
+
+      function change() {
+        window.location.href = 'updateuser.html'; // 替换为你要跳转的页面的 URL
+      }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('/api/user/profile')
+        .then(response => response.json())
+        .then(user => {
+          const userProfileContainer = document.getElementById('userProfile');
+          let htmlContent = '';
+
+          // 检查每个属性是否存在并以合适的方式将其格式化为HTML字符串
+          if (user.email) {
+            htmlContent += `<div>Email: ${user.email}</div>`;
+          }
+          else htmlContent += `<div>Email:null </div>`;
+
+          if (user.telephone) {
+            htmlContent += `<div>Telephone: ${user.telephone}</div>`;
+          }
+          else htmlContent += `<div>Telephone: null </div>`;
+
+          if (user.nickname) {
+            htmlContent += `<div>Nickname: ${user.nickname}</div>`;
+          }
+          else htmlContent += `<div>Nickname:null</div>`;
+
+          //if (user.avatarurl) {
+            //htmlContent += `<div>Avatar URL: <img src="${user.avatarurl}" alt="Avatar"></div>`;
+          //}
+        
+
+          userProfileContainer.innerHTML = htmlContent;
+        })
+        .catch(error => console.error(error));
+    });
+  </script>
+</body>
+</html>

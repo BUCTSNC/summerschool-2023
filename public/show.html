@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="show">show</div>
+    <div id="posts" class="post"></div>
+    
+
+    
+    
+    <style type="text/css">
+      .show {
+        font-size: 24px;
+        z-index: 1;
+        position: relative;
+        margin-top: 10px;
+        width: 100%;
+        padding: 5px;
+        background-color: bisque;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .box1 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+         /* 设置所需的间距值 */
+        background-color:paleturquoise;
+      }
+      .box2 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+        font-size: 24px;
+         /* 设置所需的间距值 */
+        background-color:paleturquoise;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-indent: 50px; /* 设置所需的首行缩进值 */
+      }
+      .box3 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+        font-size: 18px;
+        /* 设置所需的间距值 */
+       background-color:paleturquoise;
+     }
+     .box4 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+        /* 设置所需的间距值 */
+       background-color:paleturquoise;
+     }
+     .box5 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+        /* 设置所需的间距值 */
+       background-color:paleturquoise;
+     }
+      .box6 {
+        margin-left:10px;
+        margin-right: 10px;
+        width: 98%;
+        height: 100%;
+        margin: 20px; /* 设置所需的间距值 */
+      }
+      .box7 {
+        width: 98%;
+        height: 100%;
+        margin-left:10px;
+        margin-right: 10px;
+        /* 设置所需的间距值 */
+        height: 10px;
+       background-color:paleturquoise;
+     }
+
+      /* .post 的样式保持不变 */
+      .post {
+        z-index: 1;
+        margin-right:0px;
+        width:100%;
+        height:100%;
+        background-color:wheat;
+        float:left;
+      }
+      .box8 {
+        
+        width: 98%;
+  height: 100%;
+  background-color: wheat;
+  float: left;
+  margin: 20px; /* 设置所需的外边距值 */
+      }
+    </style>
+    
+    <script>
+      // 确保DOM加载完毕后执行脚本
+      document.addEventListener('DOMContentLoaded', () => {
+        // 使用fetch函数从服务器获取数据
+        fetch('/api/post/')
+          .then(response => response.json())
+          .then(posts => {
+            // 将获取到的数据赋值给HTML元素
+            const postsContainer = document.getElementById('posts');
+            let htmlContent = ''; // 创建一个空字符串用于存储拼接的HTML内容
+            for (const post of posts) {
+              // 每个.post元素都被放在一个.box容器中
+              
+                htmlContent += `<div class="post">`; // 将每个循环内容包裹在一个<div>元素中
+                    htmlContent += `<div class="box8">`;
+                htmlContent += `<div class="box1">`;
+                htmlContent += `<div>userid: ${post.userId}</div>`;
+                htmlContent += '</div>';
+                
+                htmlContent += `<div class="box2">`;
+                htmlContent += `<div>${post.title}</div>`;
+                htmlContent += '</div>';
+
+                htmlContent += `<div class="box3">`;
+              htmlContent += `<div>  ${post.content}</div>`;
+              htmlContent += '</div>';
+
+              htmlContent += `<div class="box7">`;
+                htmlContent += '</div>';
+
+              htmlContent += `<div class="box4">`;
+              htmlContent += `<div>creatAt: ${post.creatAt}</div>`;
+              htmlContent += '</div>';
+
+              htmlContent += `<div class="box5">`;
+              htmlContent += `<div>ipAddress: ${post.ipAddress}</div>`;
+              htmlContent += '<button class="delete-button" data-id="评论ID">删除</button>';
+              htmlContent += '</div>';
+
+              htmlContent += `<div class="box6">`;
+                htmlContent += '</div>';
+                htmlContent += '</div>';
+              htmlContent += '</div>';
+
+              postsContainer.innerHTML = htmlContent; 
+            }
+            
+          })
+          .catch(error => console.error(error));
+      });
+
+
+
+     
+        const deleteButtons = document.querySelectorAll(".delete-button");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", deleteComment);
+        });
+    
+        async function deleteComment(event) {
+          console.log("sdfbiare");
+            const commentId = event.target.dataset.id;
+            const response = await fetch(`/api/post/delete/${commentId}`, {
+                method: "DELETE"
+            });
+    
+            if (response.ok) {
+                // 删除成功
+                alert("删除成功");
+                // 进行页面刷新或其他操作
+            } else {
+                // 删除失败
+                alert("删除失败");
+            }
+        }
+    
+    </script>
+</body>
+</html>

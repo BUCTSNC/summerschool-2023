@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Form Example</title>
+    <script>
+        function submitForm() {
+            event.preventDefault();
+            
+            var title = document.getElementById('title').value;
+            var content = document.getElementById('content').value;
+            
+            fetch('/api/post/sub', {
+                method: 'POST',
+                
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, content: content })
+            })
+
+
+            .then(function(response) {
+                if (response.ok) {
+                    // 如果登录成功，重定向到 "post-content.html"
+                    alert("发布成功");
+                    //window.location.href = "/api/post/";
+                    window.location.href = "usershow.html";
+                    //react
+                } else {
+                    // 处理登录失败的情况
+                    // ...
+                    alert("邮箱或密码错误");
+                }
+            })
+            .catch(function(error) {
+                // 处理请求错误
+                // ...
+            });
+        }
+    </script>
+    <style>
+        .background{
+            background-image: url(./2.jpg);
+            background-size:cover; 
+            background-repeat: no-repeat;
+            background-size:100% 100%;
+            min-height: 100vh;
+            position: relative; /* 设置相对定位，使子元素相对于该父元素定位 */
+        }
+        .formd{
+            position: absolute; /* 设置绝对定位，相对于父元素进行定位 */
+             top: 50%; /* 相对于父元素顶部的偏移量为 50% */
+        left: 50%; /* 相对于父元素左侧的偏移量为 50% */
+        transform: translate(-50%, -50%); /* 使用位移变换将自身居中 */
+        }
+
+        label {
+            display: inline-block; /* 将标签元素转为块级行内元素，以便设置宽度和对齐 */
+            width: 100px; /* 设置标签的宽度 */
+            text-align: right; /* 将标签文本右对齐 */
+            color:white;
+          }
+          
+          input, textarea {
+            display: inline-block; /* 将输入框元素转为块级行内元素，以便设置宽度和对齐 */
+            width: 400px; /* 设置输入框的宽度 */
+            vertical-align: top; /* 将输入框与标签顶部对齐 */
+            
+          }
+          button {
+            display: block; /* 将按钮元素转为块级元素，以便设置宽度和布局 */
+            margin-top: 5px; /* 设置按钮与上方元素的间距为 5像素 */
+            margin-left: 50%; /* 将按钮左侧与父元素右侧对齐 */
+            margin-right: auto; /* 将按钮右侧与父元素左侧对齐 */
+            width: 100px;
+            height: 40px; /* 设置按钮高度 */
+            background-color: blue; /* 设置按钮背景色为蓝色 */
+            color: #ffffff; /* 设置按钮文字颜色为白色 */
+  border: none; /* 去除按钮边框 */
+  border-radius: 4px; /* 设置按钮圆角 */
+  font-size: 14px; /* 设置按钮文字大小 */
+  font-weight: bold;
+          }
+          h1 {
+            display: block; /* 将按钮元素转为块级元素，以便设置宽度和布局 */
+            
+            margin-left: 35%; /* 将按钮左侧与父元素右侧对齐 */
+            margin-right: auto; /* 将按钮右侧与父元素左侧对齐 */
+            color:azure
+          }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="formd">
+            <h1>讲出你心里的声音</h1>
+            <form >
+
+            <label for="title">title:</label>
+            <input type="title" id="title" name="title" required><br><br>
+
+            <label for="content">content:</label>
+            <textarea id="content" name="content" rows="10" cols="40" required></textarea><br><br>
+
+            
+            <button id="submit" onclick="submitForm()">提交</button>
+            
+    </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

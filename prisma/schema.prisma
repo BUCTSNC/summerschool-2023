@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+//datasource db {
+//  provider = "mysql"
+//  url      = "mysql://root:sgz111@localhost:13306/upc"//这里要使mysql运行在一个空端口上，后面会将这个端口映射到3306，但是如果这里直接3306可能会导致数据push错地方
+//}
+
+//datasource db {
+//  provider = "sqlite"
+//  url      = "file:./data.db"
+//}
+
+model Post{
+  id Int @id @default(autoincrement())//自动增长的主键列
+  title String 
+  content String
+  
+  createdAt DateTime @default(now())
+  ipAddress String
+  deletedAt DateTime?
+  postedBy User @relation(fields: [userId],references: [id])
+  userId Int
+  coments Comment[]
+}
+
+model Comment{
+  id Int @id @default(autoincrement())
+  content String
+  replyTo  Post @relation(fields: [postId],references: [id])
+  postedBy User @relation(fields: [userId],references: [id])
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+  postId Int
+  userId Int
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  email String @unique
+  telephone String? @unique
+  password String 
+  nickname String?//?表示可有可无
+  avatarurl String?
+  isAdmin Boolean @default(false)
+  posts Post[]
+  createdAt DateTime @default(now())
+  updateAt DateTime @default(now())
+  lastLogin DateTime @default(now())
+  coments Comment[]
+  }

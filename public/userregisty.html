@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+
+    <script>
+        function submitForm() {
+            event.preventDefault();
+            
+            var email = document.getElementById('email').value;
+            var nickname = document.getElementById('nickname').value;
+            var telephone = document.getElementById('telephone').value;
+            var password = document.getElementById('password').value;
+            
+            fetch('/api/user/registy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, nickname:nickname,telephone:telephone, password: password })
+            })
+
+
+            .then(function(response) {
+                if (response.ok) {
+                    // 如果登录成功，重定向到 "post-content.html"
+                    window.location.href = "usershow.html";
+                } else {
+                    // 处理登录失败的情况
+                    // ...
+                    //<p>{{ email }}</p>
+                    alert("邮箱或密码错误");
+                }
+            })
+            .catch(function(error) {
+                // 处理请求错误
+                // ...
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <style>
+        .background{
+            background-image: url(./2.jpg);
+            background-size:cover; 
+            background-repeat: no-repeat;
+            background-size:100% 100%;
+            min-height: 100vh;
+            position: relative; /* 设置相对定位，使子元素相对于该父元素定位 */
+      }
+        .formd{
+            position: absolute; /* 设置绝对定位，相对于父元素进行定位 */
+        top: 30%; /* 相对于父元素顶部的偏移量为 50% */
+        left: 50%; /* 相对于父元素左侧的偏移量为 50% */
+        transform: translate(-50%, -50%); /* 使用位移变换将自身居中 */
+
+            margin-top: 12%;
+            text-align: center;
+        }
+    </style>
+<div class="background">
+    <div class="formd">
+    <h2>欢迎注册snc内部论坛，新世界的大门马上打开</h2>
+    <form>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="nickname">Nickname:</label>
+        <input type="nickname" id="nickname" name="nickname" required><br><br>
+
+        <label for="telephone">telephone:</label>
+        <input type="telephone" id="telephone" name="telephone" required><br><br>
+
+        <label for="password">password:</label>
+        <input type="password" id="password"  name="password" required><br><br>
+
+        <!--
+        <label for="telephone">Telephone</label>
+        <input type="text" id="telephone" name="telephone" required><br><br>
+
+        <label for="nickname">Nickname</label>
+        <input type="text" id="nickname" name="nickname" required><br><br>
+
+        -->
+
+        <input type="submit" value="登录" onclick="submitForm()">
+
+    </form>
+    </div>
+</div>
+</body>
+</html>

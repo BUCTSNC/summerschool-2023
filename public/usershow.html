@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="styles/style.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="scripts/hs.js" defer></script>
+    <script src="scripts/show.js" defer></script>
+   
+</head>
+<body>
+    <style>
+      .background{
+           background-image: url(./2.jpg);
+            background-size:cover; 
+            background-attachment: fixed;
+      }
+      #scrollTopBtn {
+        position: fixed; /* 将按钮设置为固定定位，相对于浏览器窗口定位 */
+        bottom: 20px; /* 设置按钮距离底部的距离 */
+        right: 20px; /* 设置按钮距离右侧的距离 */
+       display: none; /* 初始状态隐藏按钮 */
+      }
+
+    </style>
+    <div class="background">
+      <div class="button-container">
+        <button onclick="logout()">注销</button>
+        <button id="profileButton" onclick="identity()">个人信息</button>
+      </div>
+    
+      <div class="show">show</div>
+      <div id="posts" class="post"></div>
+
+      
+
+      <div>
+        <button id="scrollTopBtn">回到顶部</button>
+
+         <button id="submit" onclick="submit()">发布帖子</button>
+
+      </div>
+    </div>
+
+
+    <script>
+        function identity() {
+            window.location.href = 'identity.html'; // 替换为你要跳转的页面的 URL
+          }
+        function submit() {
+            window.location.href = 'post-content.html';
+        }
+        function logout() {
+            fetch('/api/user/logout', { method: 'GET' })
+              .then(response => response.text())
+              .then(message => {
+                alert(message);  // 显示服务器返回的注销成功/失败信息
+                window.location.href = 'index.html';
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+          }
+
+          // 获取回到顶部按钮
+var scrollTopBtn = document.getElementById('scrollTopBtn');
+
+scrollTopBtn.addEventListener('click', function() {
+  // 滚动到页面顶部
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // 使用平滑的滚动效果
+  });
+});
+// 监听页面滚动事件
+window.addEventListener('scroll', function() {
+  // 如果滚动位置大于等于 200px，则显示按钮，否则隐藏按钮
+  if (window.pageYOffset >= 200) {
+    scrollTopBtn.style.display = 'block';
+  } else {
+    scrollTopBtn.style.display = 'none';
+  }
+});
+    </script>
+
+
+</body>
+</html>

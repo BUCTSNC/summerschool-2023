@@ -1,0 +1,113 @@
+
+.show {
+    font-size: 24px;
+    z-index: 1;
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    padding: 5px;
+    background-color: bisque;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5; /* 设置透明度，这里示范为50%的透明度 */
+    color:black;
+  }
+  .box1 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+     /* 设置所需的间距值 */
+    background-color:paleturquoise;
+    opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+    color:black;
+  }
+  .box2 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+    font-size: 24px;
+     /* 设置所需的间距值 */
+    background-color:paleturquoise;
+    opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-indent: 50px; /* 设置所需的首行缩进值 */
+    color:black
+  }
+  .box3 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+    font-size: 18px;
+    /* 设置所需的间距值 */
+   background-color:paleturquoise;
+    opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+    color:black;
+ }
+ .box4 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+    /* 设置所需的间距值 */
+   background-color:paleturquoise;
+   opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+   color:black;
+ }
+ .box5 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+    /* 设置所需的间距值 */
+   background-color:paleturquoise;
+   opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+   color:black;
+ }
+  .box6 {
+    margin-left:10px;
+    margin-right: 10px;
+    width: 98%;
+    height: 100%;
+    margin: 20px; /* 设置所需的间距值 */
+    opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+    color:black;
+  }
+  .box7 {
+    width: 98%;
+    height: 100%;
+    margin-left:10px;
+    margin-right: 10px;
+    /* 设置所需的间距值 */
+    height: 10px;
+   background-color:paleturquoise;
+   opacity: 0.9; /* 设置透明度，这里示范为50%的透明度 */
+   color:black;
+ }
+
+  /* .post 的样式保持不变 */
+  .post {
+    z-index: 1;
+    margin-right:0px;
+    width:100%;
+    height:100%;
+    background-color:wheat;
+    float:left;
+    opacity: 0.8; /* 设置透明度，这里示范为50%的透明度 */
+    color:black
+  }
+  .box8 {
+    
+    width: 98%;
+height: 100%;
+background-color: wheat;
+float: left;
+margin: 20px; /* 设置所需的外边距值 */
+opacity: 0.8; /* 设置透明度，这里示范为50%的透明度 */
+color:black;
+  }
