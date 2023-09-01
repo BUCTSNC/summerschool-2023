@@ -44,8 +44,9 @@ router.post("/registy",bodyParser.json(),sess,async(req,res)=>{
             
 
             const userId = createdUser.id;
-            res.send(String(userId));
             req.session.userId = userId;
+            res.send(String(userId));
+            
 
         }else{
             const createdUser = await prisma.user.create({
@@ -54,8 +55,10 @@ router.post("/registy",bodyParser.json(),sess,async(req,res)=>{
             });
             
             const userId = createdUser.id;
-            res.send(String(userId));
             req.session.userId = userId;
+            res.send(String(userId));
+
+           
             
         }
     }
@@ -190,8 +193,8 @@ router.put("/information", bodyParser.json(), sess, async (req, res) => {
         }, 
           data: {
 
-            email:email
-            nickname:nickname
+            email:email,
+            nickname:nickname,
             telephone:telephone
           
         }
@@ -210,8 +213,8 @@ router.put("/information", bodyParser.json(), sess, async (req, res) => {
                 id: userId
             },
             data: {
-                email:email
-                nickname:nickname
+                email:email,
+                nickname:nickname,
                 telephone:telephone
             }
         })

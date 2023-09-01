@@ -45,8 +45,8 @@ router.post("/registy", bodyParser.json(), sess, (req, res) => __awaiter(void 0,
                     select: { id: true }, //只输出id
                 });
                 const userId = createdUser.id;
-                res.send(String(userId));
                 req.session.userId = userId;
+                res.send(String(userId));
             }
             else {
                 const createdUser = yield prisma.user.create({
@@ -54,8 +54,8 @@ router.post("/registy", bodyParser.json(), sess, (req, res) => __awaiter(void 0,
                     select: { id: true }, //返给createdUser
                 });
                 const userId = createdUser.id;
-                res.send(String(userId));
                 req.session.userId = userId;
+                res.send(String(userId));
             }
         }
         catch (err) {
