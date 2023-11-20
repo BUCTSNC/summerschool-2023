@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <input type="text" id="inp" />
+    <p id="para"></p>
+    <script>
+      const inp = document.getElementById("inp");
+      const para = document.getElementById("para");
+      function calculatePow(event) {
+        // 对多数元素而言，event.target就是事件发生所在的元素对象
+        // 对input元素而言，其value属性是用户输入的文本内容
+        const inputNumber = Number(event.target.value);
+        if (Number.isNaN(inputNumber)) {
+          para.innerText = "非法输入，请重试";
+        } else {
+          para.innerText = String(Math.pow(inputNumber, 2));
+        }
+      }
+
+      inp.addEventListener("input", calculatePow);
+    </script>
+  </body>
+</html>
